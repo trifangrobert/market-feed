@@ -1,0 +1,47 @@
+# Build directories
+/build/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled static libraries
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug / profiling files
+*.gch
+*.pch
+*.gcno
+*.gcda
+*.prof
+*.stackdump
+
+# Logs
+*.log
+
+# IDE/editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
