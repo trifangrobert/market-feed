@@ -31,6 +31,14 @@ add_executable(ob_match_taker ob_match_taker.cpp)
 link_core(ob_match_taker)
 add_test(NAME ob_match_taker COMMAND ob_match_taker)
 
+add_executable(engine_new engine_new.cpp)
+link_core(engine_new)
+add_test(NAME engine_new COMMAND engine_new)
+
+add_executable(engine_cancel engine_cancel.cpp)
+link_core(engine_cancel)
+add_test(NAME engine_cancel COMMAND engine_cancel)
+
 # --- HOW TO ADD A NEW TEST ---
 # 1) Drop my_new_test.cpp into this folder.
 # 2) Copy/paste these 3 lines and adjust the name:
