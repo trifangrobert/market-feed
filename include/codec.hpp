@@ -73,7 +73,7 @@ namespace codec {
         if (fv.hdr.type != static_cast<uint8_t>(expected)) {
             throw std::runtime_error("different message expected");
         }
-        return decode_body<T>(fv.body, sizeof(T));
+        return decode_body<T>(fv.body);
     }
 
 }
