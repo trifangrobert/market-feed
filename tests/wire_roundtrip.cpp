@@ -2,6 +2,7 @@
 #include <array>
 #include <cassert>
 #include <iostream>
+#include <cstring>
 
 int main() {
     Header hdr{};

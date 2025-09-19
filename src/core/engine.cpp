@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include <vector>
 #include <cassert>
+#include <chrono>
 
 Engine::Engine(uint32_t _instrument_id_) : instrument_id_(_instrument_id_) {}
 
