@@ -39,6 +39,10 @@ add_executable(engine_cancel engine_cancel.cpp)
 link_core(engine_cancel)
 add_test(NAME engine_cancel COMMAND engine_cancel)
 
+add_executable(roundtrip roundtrip.cpp)
+link_core(roundtrip)
+add_test(NAME roundtrip COMMAND roundtrip)
+
 # --- HOW TO ADD A NEW TEST ---
 # 1) Drop my_new_test.cpp into this folder.
 # 2) Copy/paste these 3 lines and adjust the name:
