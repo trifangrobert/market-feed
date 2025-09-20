@@ -4,8 +4,9 @@
 #include <cerrno>
 #include <cstring>
 #include <iostream>
-#include "wire.hpp"
 #include <cstdint>
+#include "wire.hpp"
+#include "codec.hpp"
 
 static const char* kSockPath = "/tmp/demo.sock";
 
@@ -74,15 +75,17 @@ int main() {
 
     std::cout << "server: listening on " << kSockPath << "\n";
 
-    int client_fd = ::accept(srv, nullptr, nullptr);
-    if (client_fd < 0) {
-        std::perror("accept");
-        ::close(srv);
-        return 1;
+    int client_fd;
+    for (;;) {
+        client_fd = ::accept(srv, nullptr, nullptr);
+        if (client_fd >= 0) break;
+        if (errno == EINTR) continue;
+        std::perror("accept"); ::close(srv); return 1;
     }
-
+    
     std::cout << "server: client connected\n";
-
+    
+    constexpr size_t kMaxFrame = 64 * 1024;
     Header h{};
     if (!read_exact(client_fd, &h, sizeof(Header))) {
         std::cerr << "server: failed to read header\n";
@@ -91,6 +94,42 @@ int main() {
         std::cout << "got header type=" << int(h.type)
               << " ver=" << int(h.version)
               << " size=" << h.size << "\n";
+        if (h.size < sizeof(Header)) {
+            std::cerr << "server: bad frame size\n";
+        }
+        else {
+            const size_t body_len = h.size - sizeof(Header);
+            if (body_len > kMaxFrame) {
+                std::cerr << "server: frame too large\n";
+                throw std::runtime_error("frame too large");
+            }
+            std::vector<uint8_t> body(body_len);
+            if (!read_exact(client_fd, body.data(), body_len)) {
+                std::cerr << "server: failed to read body\n";
+            }
+            else {
+                switch (static_cast<MsgType>(h.type)) {
+                    case MsgType::NEW:
+                        std::cout << "got header type=NEW" << "\n";
+                        break;
+                    case MsgType::CANCEL:
+                        std::cout << "got header type=CANCEL" << "\n";
+                        break;
+                    case MsgType::ACK:
+                        std::cout << "got header type=ACK" << "\n";
+                        break;
+                    case MsgType::TRADE:
+                        std::cout << "got header type=TRADE" << "\n";
+                        break;
+                    case MsgType::RESERVED:
+                        std::cout << "got header type=RESERVED" << "\n" << "\n";
+                        break;
+                    default:
+                        std::cout << "got header type=UNKNOWN(" << int(h.type) << ")" << "\n";
+                        break;
+                }
+            }
+        }
     }
 
     ::unlink(kSockPath);
