@@ -83,6 +83,16 @@ int main() {
 
     std::cout << "server: client connected\n";
 
+    Header h{};
+    if (!read_exact(client_fd, &h, sizeof(Header))) {
+        std::cerr << "server: failed to read header\n";
+    }
+    else {
+        std::cout << "got header type=" << int(h.type)
+              << " ver=" << int(h.version)
+              << " size=" << h.size << "\n";
+    }
+
     ::unlink(kSockPath);
     ::close(client_fd);
     ::close(srv);
