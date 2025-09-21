@@ -14,6 +14,16 @@ namespace codec {
         std::span<const uint8_t> body;
     };
 
+    inline Header make_header(MsgType type, uint16_t body_bytes, uint64_t seq, uint64_t ts_ns) {
+        Header h{};
+        h.type    = static_cast<uint8_t>(type);
+        h.version = kProtocolVersion;
+        h.size    = sizeof(Header) + body_bytes;
+        h.seqno   = seq;
+        h.ts_ns   = ts_ns;
+        return h;
+    }
+
     template <typename T>
     std::vector<uint8_t> encode(const T& obj) {
         static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
