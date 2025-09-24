@@ -96,8 +96,6 @@ int main() {
     
     Engine engine{1};
     static uint64_t md_seqno = 0;
-
-    constexpr size_t kMaxFrame = 64 * 1024;
     
     while (true) {
         Header h{};
