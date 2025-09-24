@@ -1,14 +1,20 @@
 #pragma once
 #include <cstdint>
 #include <type_traits>
+#include <cstddef>
 
 enum class MsgType: uint8_t {
     RESERVED = 0,
     NEW = 1,
     CANCEL = 2,
-    ACK = 3, // this one can also be rejected
+    ACK = 3, // this one can also be rejected (NACK)
     TRADE = 4,
 };
+
+inline constexpr uint8_t kProtocolVersion = 1;
+constexpr size_t kMaxFrame = 64 * 1024;
+constexpr uint8_t TIF_IOC = 0x1; // bit0: Immediate-Or-Cancel
+constexpr uint8_t TIF_FOK = 0x2; // bit1: Fill-Or-Kill
 
 // Naturally aligned header, expected to be 24 bytes on ARM64/x86_64
 struct Header {

@@ -10,7 +10,6 @@ function(link_core tgt)
 endfunction()
 
 # ---- Tests ----
-# wire_roundtrip
 add_executable(wire_roundtrip wire_roundtrip.cpp)
 link_core(wire_roundtrip)
 add_test(NAME wire_roundtrip COMMAND wire_roundtrip)
@@ -42,6 +41,16 @@ add_test(NAME engine_cancel COMMAND engine_cancel)
 add_executable(roundtrip roundtrip.cpp)
 link_core(roundtrip)
 add_test(NAME roundtrip COMMAND roundtrip)
+
+# --- Integration tests ---
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+add_test(NAME server_client_roundtrip
+         COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/integration/server_client_roundtrip.py
+                 --server $<TARGET_FILE:server>
+                 --client $<TARGET_FILE:client>)
+set_tests_properties(server_client_roundtrip PROPERTIES TIMEOUT 20 RUN_SERIAL TRUE)
+
 
 # --- HOW TO ADD A NEW TEST ---
 # 1) Drop my_new_test.cpp into this folder.
