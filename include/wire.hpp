@@ -11,6 +11,7 @@ enum class MsgType: uint8_t {
 };
 
 inline constexpr uint8_t kProtocolVersion = 1;
+constexpr size_t kMaxFrame = 64 * 1024;
 constexpr uint8_t TIF_IOC = 0x1; // bit0: Immediate-Or-Cancel
 constexpr uint8_t TIF_FOK = 0x2; // bit1: Fill-Or-Kill
 
