@@ -4,7 +4,7 @@
 #include <iostream>
 
 int main() {
-    Engine eng{1};
+    Engine eng;
 
     // --- 0) NACK on invalid input (price < 0 allowed? no → reject if < 0)
     {
@@ -51,7 +51,7 @@ int main() {
     // Best ask should be 101 with head qty 30
     {
         int64_t px; int32_t q;
-        assert(eng.best_ask(px, q));
+        assert(eng.best_ask(1, px, q));
         assert(px == 101);
         assert(q == 30);
     }
@@ -81,7 +81,7 @@ int main() {
     // After fills, best ask should be 102 with head qty 20
     {
         int64_t px; int32_t q;
-        assert(eng.best_ask(px, q));
+        assert(eng.best_ask(1, px, q));
         assert(px == 102);
         assert(q == 20);
     }

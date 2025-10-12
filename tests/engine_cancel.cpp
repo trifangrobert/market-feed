@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main() {
-    Engine eng{1};
+    Engine eng;
 
     // --- 1) Cancel non-existent ID -> NACK, echoed exch_order_id ---
     {
@@ -36,7 +36,7 @@ int main() {
     // Verify it’s on the book
     {
         int64_t px; int32_t q;
-        assert(eng.best_ask(px, q));
+        assert(eng.best_ask(1, px, q));
         assert(px == 101);
         assert(q == 40);
     }
@@ -56,7 +56,7 @@ int main() {
     // Book should now have no asks at 101 (empty side)
     {
         int64_t px; int32_t q;
-        bool have_ask = eng.best_ask(px, q);
+        bool have_ask = eng.best_ask(1, px, q);
         assert(!have_ask); // side should be empty after the cancel
     }
 
