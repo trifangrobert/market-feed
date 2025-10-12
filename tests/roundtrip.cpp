@@ -25,7 +25,7 @@ int main() {
     assert(fv.hdr.type == static_cast<uint8_t>(MsgType::NEW));
     OrderNewBody unpacked_body = codec::decode_body<OrderNewBody>(fv.body);
 
-    Engine engine{1};
+    Engine engine;
     OrderNewBody seed{};
     seed.client_order_id = 7;
     seed.price_ticks = body.price_ticks; // same price as bid

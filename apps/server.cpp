@@ -94,7 +94,7 @@ int main() {
     }
     std::cout << "server: client connected\n";
     
-    Engine engine{1};
+    Engine engine;
     static uint64_t md_seqno = 0;
     
     while (true) {
