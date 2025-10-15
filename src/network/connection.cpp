@@ -1,4 +1,4 @@
-#include "connection.hpp"
+#include "network/connection.hpp"
 #include <unistd.h>
 #include <errno.h>
 

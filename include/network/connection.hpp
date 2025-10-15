@@ -24,6 +24,10 @@ public:
     ClientId get_client_id() const {
         return client_id_;
     }
+    
+    int get_fd() const {
+        return fd_;
+    }
 private:
     int fd_;
     ClientId client_id_;
