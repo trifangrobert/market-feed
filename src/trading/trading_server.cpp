@@ -174,7 +174,7 @@ void TradingServer::handle_existing_clients(const fd_set& read_fds) {
         
         if (FD_ISSET(client.get_fd(), &read_fds)) {
             if (!process_client_message(client)) {
-                std::cout << "TradingServer: Removing client " << it->first << "\n";
+                std::cout << "TradingServer: Client " << it->first << " disconnected gracefully\n";
                 it = client_connections_.erase(it);
                 continue;
             }
@@ -190,8 +190,6 @@ bool TradingServer::process_client_message(Connection& client) {
     message.resize(sizeof(Header));
 
     if (!client.receive_message(message, sizeof(Header))) {
-        std::cout << "TradingServer: Client " << client.get_client_id() 
-                  << " disconnected during header read\n";
         return false;
     }
 

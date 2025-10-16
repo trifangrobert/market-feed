@@ -30,15 +30,19 @@ std::vector<std::vector<uint8_t>> ServerMessageHandler::handle_message(const std
             return handle_cancel_order(*header, body);
         case MsgType::ACK:
         case MsgType::TRADE:
-        case MsgType::RESERVED:
             std::cout << "ServerMessageHandler: Received " << static_cast<int>(header->type) 
                       << " (not expected from client)\n";
-            return {};
+            break;
+        case MsgType::RESERVED:
+            std::cout << "ServerMessageHandler: Received RESERVED message (not expected from client)\n";
+            break;
         default:
             std::cerr << "ServerMessageHandler: Unknown message type: " 
                       << static_cast<int>(header->type) << "\n";
-            return {};
+            break;
     }
+    
+    return {};
 }
 
 std::vector<std::vector<uint8_t>> ServerMessageHandler::handle_new_order(const Header& header, const std::vector<uint8_t>& body) {
@@ -77,7 +81,7 @@ std::vector<std::vector<uint8_t>> ServerMessageHandler::handle_cancel_order(cons
     try {
         auto cancel_order = codec::decode_body<OrderCancelBody>(std::span<const uint8_t>(body));
         
-        std::cout << "CANCEL: cid=" << cancel_order.client_order_id << "\n";
+        std::cout << "CANCEL: cid=" << cancel_order.client_order_id << " exch_order_id=" << cancel_order.exch_order_id << " instr=" << cancel_order.instrument_id << "\n";
         
         EngineResult result = engine_.on_cancel(cancel_order);
         

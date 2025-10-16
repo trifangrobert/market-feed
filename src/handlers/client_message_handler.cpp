@@ -16,10 +16,12 @@ void ClientMessageHandler::handle_message(const std::vector<uint8_t>& message) {
     switch (static_cast<MsgType>(header->type)) {
         case MsgType::ACK:
             handle_ack(*header, body);
+            break;
         case MsgType::TRADE:
             handle_trade(*header, body);
+            break;
         default:
-            std::cerr << "ServerMessageHandler: Unknown message type: " 
+            std::cerr << "ClientMessageHandler: Unknown message type: " 
                       << static_cast<int>(header->type) << "\n";
     }
 }

@@ -63,7 +63,7 @@ bool Connection::receive_message(std::vector<uint8_t>& buf, size_t expected_byte
     if (buf.size() < expected_byte_length) {
         buf.resize(expected_byte_length);
     }
-    uint8_t* p = static_cast<uint8_t*>(buf.data());
+    uint8_t* p = buf.data();
     size_t sz = 0;
     while (sz < expected_byte_length) {
         ssize_t read_bytes = ::read(fd_, p + sz, expected_byte_length - sz);
