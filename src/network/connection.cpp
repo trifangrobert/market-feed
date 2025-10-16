@@ -1,6 +1,8 @@
 #include "network/connection.hpp"
 #include <unistd.h>
 #include <errno.h>
+#include <cstdint>
+#include <cstring>
 
 ClientId Connection::next_client_id_ = 1;
 
