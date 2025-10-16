@@ -133,6 +133,22 @@ uint64_t TradingClient::place_order(uint32_t instrument_id, OrderSide side, int6
         throw std::runtime_error("TradingClient: Order was rejected (NACK) with status " + std::to_string(ack_body->status));
     }
     
+    std::vector<uint8_t> additional_message;
+    additional_message.resize(sizeof(Header));
+    
+    if (connection_->receive_message(additional_message, sizeof(Header))) {
+        Header* add_header = reinterpret_cast<Header*>(additional_message.data());
+        
+        size_t add_body_size = add_header->size - sizeof(Header);
+        additional_message.resize(add_header->size);
+        std::vector<uint8_t> add_body_bytes(add_body_size);
+        
+        if (connection_->receive_message(add_body_bytes, add_body_size)) {
+            std::memcpy(additional_message.data() + sizeof(Header), add_body_bytes.data(), add_body_size);
+            message_handler_.handle_message(additional_message);
+        }
+    }
+    
     return ack_body->exch_order_id;
 }
 

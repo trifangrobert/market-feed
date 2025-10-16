@@ -2,6 +2,8 @@
 #include "order_book.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <thread>
+#include <chrono>
 
 static const char* kSockPath = "/tmp/demo.sock";
 
@@ -21,14 +23,13 @@ int main() {
         
         std::cout << "Order placed successfully! Exchange Order ID: " << exchange_order_id << "\n";
         
-        // Optionally cancel the order
-        std::cout << "Cancelling order...\n";
-        bool cancelled = client.cancel_order(exchange_order_id, 1);
-        if (cancelled) {
-            std::cout << "Order cancelled successfully!\n";
-        } else {
-            std::cout << "Order cancellation failed or order was already filled.\n";
-        }
+        // std::cout << "Cancelling order...\n";
+        // bool cancelled = client.cancel_order(exchange_order_id, 1);
+        // if (cancelled) {
+        //     std::cout << "Order cancelled successfully!\n";
+        // } else {
+        //     std::cout << "Order cancellation failed or order was already filled.\n";
+        // }
         
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << "\n";
