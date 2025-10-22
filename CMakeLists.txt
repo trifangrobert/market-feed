@@ -19,7 +19,13 @@ if (NOT CORE_SOURCES)
   message(FATAL_ERROR "No sources found in src/core/*.cpp — expected at least one.")
 endif()
 
-add_library(marketfeed_core STATIC ${CORE_SOURCES})
+# Trading server library built from src/trading/*.cpp, src/network/*.cpp, and src/handlers/*.cpp
+file(GLOB TRADING_SOURCES CONFIGURE_DEPENDS "src/trading/*.cpp" "src/network/*.cpp" "src/handlers/*.cpp")
+
+# Combine all sources
+set(ALL_SOURCES ${CORE_SOURCES} ${TRADING_SOURCES})
+
+add_library(marketfeed_core STATIC ${ALL_SOURCES})
 target_include_directories(marketfeed_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_compile_features(marketfeed_core PUBLIC cxx_std_20)
 
